@@ -1,57 +1,27 @@
 package repository
 
 import (
-	"BrokenAuthentication/dto"
-	"BrokenAuthentication/model"
-	"BrokenAuthentication/util"
-	"fmt"
-	"github.com/joho/godotenv"
-	"gorm.io/driver/mysql"
+	"context"
+	"github.com/go-redis/redis/v8"
 	"gorm.io/gorm"
-	"log"
-	"os"
 )
 
 
 type Repository struct {
 	DB *gorm.DB
+	IPCache *redis.Client
+	UserCache *redis.Client
+	OTPCache *redis.Client
+	ResetTokenCache *redis.Client
+	Ctx context.Context
 }
 
 var Repo *Repository
 
-func (r *Repository) InitializeRepository() *gorm.DB{
-	err := godotenv.Load(".env")
-	if err != nil{
-		log.Fatal(err)
-	}
-
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", os.Getenv("db_user"), os.Getenv("db_pass"), os.Getenv("db_host"), os.Getenv("db_port"), os.Getenv("db_name") )
-	r.DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	if err != nil{
-		log.Fatal(err)
-	}
-	return r.DB
-}
-
-func (r *Repository) CreateUser(rRequest dto.RegisterRequest) model.User{
-	user := model.User{
-		Username: rRequest.Username,
-		Password: util.Hash(rRequest.Password),
-		IsAdmin:  *rRequest.IsAdmin,
-	}
-	r.DB.Create(&user)
-	return user
-}
-
-func (r *Repository) FindByUsername(username string) model.User{
-	var user model.User
-	r.DB.Where("username = ? ", username).First(&user)
-	return user
-}
-
-func (r *Repository) FindByUsernameAndPassword(username string, password string) model.User{
-	var user model.User
-	r.DB.Where("username = ? and password = ?", username, util.Hash(password)).First(&user)
-	return user
+func (r *Repository) ClearCache(){
+	r.IPCache.FlushAll(r.Ctx)
+	r.UserCache.FlushAll(r.Ctx)
+	r.OTPCache.FlushAll(r.Ctx)
+	r.ResetTokenCache.FlushAll(r.Ctx)
 }
 

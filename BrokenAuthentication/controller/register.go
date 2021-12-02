@@ -29,7 +29,7 @@ func (rController *RegisterController) RegisterByUsername(c *gin.Context){
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Registration successfully !",
+		"message": "Registration successful!",
 		"user": user,
 	})
 }
