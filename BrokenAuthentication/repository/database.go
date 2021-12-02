@@ -52,5 +52,6 @@ func (r *Repository) ChangeUserPassword(username string, password string) *model
 	var user model.User
 	r.DB.Where("username = ? ", username).First(&user)
 	user.Password = util.Hash(password)
+	r.DB.Save(&user)
 	return &user
 }
