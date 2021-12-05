@@ -11,7 +11,7 @@ import (
 func InitializeRouter() *gin.Engine{
 	router := gin.Default()
 
-	repository.Repo = &repository.Repository{DB: nil, IPCache: nil, UserCache: nil, OTPCache: nil}
+	repository.Repo = &repository.Repository{DB: nil, IPCache: nil, UserCache: nil, OTPCache: nil, ResetTokenCache: nil}
 	repository.Repo.InitializeDatabaseRepository()
 	repository.Repo.InitializeIPCacheRepository()
 	repository.Repo.InitializeUserCacheRepository()

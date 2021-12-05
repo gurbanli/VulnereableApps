@@ -5,5 +5,7 @@ import (
 )
 
 func main(){
-	router.InitializeRouter().Run(":4444")
+
+	rout := router.InitializeRouter()
+	rout.Run(":4444")
 }
