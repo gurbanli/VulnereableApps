@@ -8,9 +8,8 @@ import (
 
 //author: gurbanli
 type SessionService interface {
-	CheckUsernameAndPassword()
-	CheckOTP()
-	CheckUsername()
+	SetAuthSession()
+	IsAdmin()
 }
 
 

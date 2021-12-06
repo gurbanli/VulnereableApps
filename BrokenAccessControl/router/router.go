@@ -28,6 +28,8 @@ func InitializeRouter() *gin.Engine{
 
 
 	repository.Repo.DB.AutoMigrate(&model.User{})
+	repository.Repo.DB.AutoMigrate(&model.Product{})
+
 
 	service.Auth = &service.AuthServiceImpl{}
 	service.Session = &service.SessionServiceImpl{}

@@ -8,9 +8,8 @@ import (
 )
 
 type AuthService interface {
+	RegisterUser()
 	CheckUsernameAndPassword()
-	CheckOTP()
-	CheckUsername()
 }
 
 

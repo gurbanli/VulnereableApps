@@ -7,4 +7,5 @@ type User struct {
 	Email string `gorm:"unique; not null"`
 	Password string `json:"-" gorm:"not null"`
 	IsAdmin bool `json:"-" gorm:"not null"`
+	Products []Product
 }
